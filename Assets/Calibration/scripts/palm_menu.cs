@@ -18,11 +18,11 @@ namespace Oculus.Interaction.Samples
         [SerializeField]
         private ActiveStateSelector[] _poses;
 
-        //[SerializeField]
-        //private Material[] _onSelectIcons;
+        [SerializeField]
+        private Material[] _onSelectIcons;
 
-        //[SerializeField]
-        //private GameObject _poseActiveVisualPrefab;
+        [SerializeField]
+        private GameObject _poseActiveVisualPrefab;
 
         private GameObject[] _poseActiveVisuals;
 
@@ -37,15 +37,15 @@ namespace Oculus.Interaction.Samples
             this.AssertField(_poseActiveVisualPrefab, nameof(_poseActiveVisualPrefab));
 
             _poseActiveVisuals = new GameObject[_poses.Length];
-            //_poseActiveVisuals[0] = Instantiate(_poseActiveVisualPrefab);
+            _poseActiveVisuals[0] = Instantiate(_poseActiveVisualPrefab);
             _poseActiveVisuals[0].GetComponentInChildren<TextMeshPro>().text = _poses[0].name;
-            //_poseActiveVisuals[0].GetComponentInChildren<ParticleSystemRenderer>().material = _onSelectIcons[0];
+            _poseActiveVisuals[0].GetComponentInChildren<ParticleSystemRenderer>().material = _onSelectIcons[0];
             _poseActiveVisuals[0].SetActive(false);
 
             _poses[0].WhenSelected += () => palmUp();
             _poses[0].WhenUnselected += () => palmDown();
         }
-
+        
         private void palmUp()
         {
             debug_text.text = "palm up";
