@@ -9137,11 +9137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debug_text: {fileID: 1593489501}
   _hmd: {fileID: 5598423577860856110}
-  _poses:
-  - {fileID: 7935958764962676891}
-  _onSelectIcons:
-  - {fileID: 2100000, guid: e616a4eb1b541bc498887ab3e34dfd70, type: 2}
-  _poseActiveVisualPrefab: {fileID: 2064165940617659214}
+  _pose: {fileID: 7935958764962676891}
 --- !u!1 &2068248236484087213
 GameObject:
   m_ObjectHideFlags: 0
@@ -20871,11 +20867,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debug_text: {fileID: 0}
   _hmd: {fileID: 5598423577860856110}
-  _poses:
-  - {fileID: 7935958764962676891}
-  _onSelectIcons:
-  - {fileID: 2100000, guid: e616a4eb1b541bc498887ab3e34dfd70, type: 2}
-  _poseActiveVisualPrefab: {fileID: 2064165940617659214}
+  _pose: {fileID: 0}
 --- !u!1 &8364102045438468976
 GameObject:
   m_ObjectHideFlags: 0

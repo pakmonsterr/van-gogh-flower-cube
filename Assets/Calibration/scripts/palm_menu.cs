@@ -16,15 +16,7 @@ namespace Oculus.Interaction.Samples
         private IHmd Hmd { get; set; }
 
         [SerializeField]
-        private ActiveStateSelector[] _poses;
-
-        [SerializeField]
-        private Material[] _onSelectIcons;
-
-        [SerializeField]
-        private GameObject _poseActiveVisualPrefab;
-
-        private GameObject[] _poseActiveVisuals;
+        private ActiveStateSelector _pose;
 
         protected virtual void Awake()
         {
@@ -34,10 +26,8 @@ namespace Oculus.Interaction.Samples
         protected virtual void Start()
         {
             this.AssertField(Hmd, nameof(Hmd));
-            this.AssertField(_poseActiveVisualPrefab, nameof(_poseActiveVisualPrefab));
-
-            _poses[0].WhenSelected += () => palmUp();
-            _poses[0].WhenUnselected += () => palmDown();
+            _pose.WhenSelected += () => palmUp();
+            _pose.WhenUnselected += () => palmDown();
         }
         
         private void palmUp()
