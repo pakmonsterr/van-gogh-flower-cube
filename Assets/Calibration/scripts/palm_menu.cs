@@ -35,19 +35,15 @@ namespace Oculus.Interaction.Samples
             this.AssertField(_poseActiveVisualPrefab, nameof(_poseActiveVisualPrefab));
 
             _poseActiveVisuals = new GameObject[_poses.Length];
-            for (int i = 0; i < _poses.Length; i++)
-            {
-                _poseActiveVisuals[i] = Instantiate(_poseActiveVisualPrefab);
-                _poseActiveVisuals[i].GetComponentInChildren<TextMeshPro>().text = _poses[i].name;
-                _poseActiveVisuals[i].GetComponentInChildren<ParticleSystemRenderer>().material = _onSelectIcons[i];
-                _poseActiveVisuals[i].SetActive(false);
+            _poseActiveVisuals[0] = Instantiate(_poseActiveVisualPrefab);
+            _poseActiveVisuals[0].GetComponentInChildren<TextMeshPro>().text = _poses[0].name;
+            _poseActiveVisuals[0].GetComponentInChildren<ParticleSystemRenderer>().material = _onSelectIcons[0];
+            _poseActiveVisuals[0].SetActive(false);
 
-                int poseNumber = i;
-                _poses[i].WhenSelected += () => ShowVisuals(poseNumber);
-                _poses[i].WhenUnselected += () => HideVisuals(poseNumber);
-            }
+            _poses[0].WhenSelected += () => ShowVisuals();
+            _poses[0].WhenUnselected += () => HideVisuals();
         }
-        private void ShowVisuals(int poseNumber)
+        private void ShowVisuals()
         {
             if (!Hmd.TryGetRootPose(out Pose hmdPose))
             {
@@ -55,10 +51,10 @@ namespace Oculus.Interaction.Samples
             }
 
             Vector3 spawnSpot = hmdPose.position + hmdPose.forward;
-            _poseActiveVisuals[poseNumber].transform.position = spawnSpot;
-            _poseActiveVisuals[poseNumber].transform.LookAt(2 * _poseActiveVisuals[poseNumber].transform.position - hmdPose.position);
+            _poseActiveVisuals[0].transform.position = spawnSpot;
+            _poseActiveVisuals[0].transform.LookAt(2 * _poseActiveVisuals[0].transform.position - hmdPose.position);
 
-            var hands = _poses[poseNumber].GetComponents<HandRef>();
+            var hands = _poses[0].GetComponents<HandRef>();
             Vector3 visualsPos = Vector3.zero;
             foreach (var hand in hands)
             {
@@ -66,13 +62,13 @@ namespace Oculus.Interaction.Samples
                 Vector3 forward = hand.Handedness == Handedness.Left ? wristPose.right : -wristPose.right;
                 visualsPos += wristPose.position + forward * .15f + Vector3.up * .02f;
             }
-            _poseActiveVisuals[poseNumber].transform.position = visualsPos / hands.Length;
-            _poseActiveVisuals[poseNumber].gameObject.SetActive(true);
+            _poseActiveVisuals[0].transform.position = visualsPos / hands.Length;
+            _poseActiveVisuals[0].gameObject.SetActive(true);
         }
 
-        private void HideVisuals(int poseNumber)
+        private void HideVisuals()
         {
-            _poseActiveVisuals[poseNumber].gameObject.SetActive(false);
+            _poseActiveVisuals[0].gameObject.SetActive(false);
         }
     }
 }
