@@ -5,6 +5,7 @@ using TMPro;
 
 public class place_marker : MonoBehaviour
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/centerOnPointerEvent")]
     public TMP_Text debug_text;
 
     // broader control
@@ -37,7 +38,7 @@ public class place_marker : MonoBehaviour
         hand_tracking = OVRPlugin.GetHandTrackingEnabled();
         R_active = hand_tracking ? R_hand_obj : R_controller_obj;
 
-        debug_text.text = $"{R_hand.HandConfidence == OVRHand.TrackingConfidence.High}";
+        //debug_text.text = $"{R_hand.HandConfidence == OVRHand.TrackingConfidence.High}";
 
         if (hand_tracking) 
         {
