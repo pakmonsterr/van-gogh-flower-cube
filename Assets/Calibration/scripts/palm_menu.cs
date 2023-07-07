@@ -10,6 +10,7 @@ namespace Oculus.Interaction.Samples
     public class palm_menu : MonoBehaviour
     {
         public TMP_Text debug_text;
+        public GameObject confirm_btn;
         
         [SerializeField, Interface(typeof(IHmd))]
         private UnityEngine.Object _hmd;
@@ -28,16 +29,20 @@ namespace Oculus.Interaction.Samples
             this.AssertField(Hmd, nameof(Hmd));
             _pose.WhenSelected += () => palmUp();
             _pose.WhenUnselected += () => palmDown();
+
+            confirm_btn.SetActive(false);
         }
         
         private void palmUp()
         {
             debug_text.text = "palm up";
+            confirm_btn.SetActive(true);
         }
 
         private void palmDown()
         {
             debug_text.text = "palm down";
+            confirm_btn.SetActive(false);
         }
     }
 }
