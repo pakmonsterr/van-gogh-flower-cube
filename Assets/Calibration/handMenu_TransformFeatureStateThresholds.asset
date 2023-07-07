@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac666f23650b94b4ea891467ab3677e5, type: 3}
-  m_Name: DefaultTransformFeatureStateThresholds
+  m_Name: handMenu_TransformFeatureStateThresholds
   m_EditorClassIdentifier: 
   _featureThresholds:
   - _feature: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
     _minTimeInState: 0
   - _feature: 4
     _thresholds:
-    - _thresholdMidpoint: 40
+    - _thresholdMidpoint: 54.33723
       _thresholdWidth: 20
       _firstState: 12
       _secondState: 14
