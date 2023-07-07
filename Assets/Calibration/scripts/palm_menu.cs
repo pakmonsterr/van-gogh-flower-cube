@@ -36,12 +36,6 @@ namespace Oculus.Interaction.Samples
             this.AssertField(Hmd, nameof(Hmd));
             this.AssertField(_poseActiveVisualPrefab, nameof(_poseActiveVisualPrefab));
 
-            _poseActiveVisuals = new GameObject[_poses.Length];
-            _poseActiveVisuals[0] = Instantiate(_poseActiveVisualPrefab);
-            _poseActiveVisuals[0].GetComponentInChildren<TextMeshPro>().text = _poses[0].name;
-            _poseActiveVisuals[0].GetComponentInChildren<ParticleSystemRenderer>().material = _onSelectIcons[0];
-            _poseActiveVisuals[0].SetActive(false);
-
             _poses[0].WhenSelected += () => palmUp();
             _poses[0].WhenUnselected += () => palmDown();
         }
