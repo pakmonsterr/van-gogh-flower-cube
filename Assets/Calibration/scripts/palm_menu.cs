@@ -9,6 +9,8 @@ namespace Oculus.Interaction.Samples
 {
     public class palm_menu : MonoBehaviour
     {
+        public TMP_Text debug_text;
+        
         [SerializeField, Interface(typeof(IHmd))]
         private UnityEngine.Object _hmd;
         private IHmd Hmd { get; set; }
@@ -16,11 +18,11 @@ namespace Oculus.Interaction.Samples
         [SerializeField]
         private ActiveStateSelector[] _poses;
 
-        [SerializeField]
-        private Material[] _onSelectIcons;
+        //[SerializeField]
+        //private Material[] _onSelectIcons;
 
-        [SerializeField]
-        private GameObject _poseActiveVisualPrefab;
+        //[SerializeField]
+        //private GameObject _poseActiveVisualPrefab;
 
         private GameObject[] _poseActiveVisuals;
 
@@ -35,40 +37,23 @@ namespace Oculus.Interaction.Samples
             this.AssertField(_poseActiveVisualPrefab, nameof(_poseActiveVisualPrefab));
 
             _poseActiveVisuals = new GameObject[_poses.Length];
-            _poseActiveVisuals[0] = Instantiate(_poseActiveVisualPrefab);
+            //_poseActiveVisuals[0] = Instantiate(_poseActiveVisualPrefab);
             _poseActiveVisuals[0].GetComponentInChildren<TextMeshPro>().text = _poses[0].name;
-            _poseActiveVisuals[0].GetComponentInChildren<ParticleSystemRenderer>().material = _onSelectIcons[0];
+            //_poseActiveVisuals[0].GetComponentInChildren<ParticleSystemRenderer>().material = _onSelectIcons[0];
             _poseActiveVisuals[0].SetActive(false);
 
-            _poses[0].WhenSelected += () => ShowVisuals();
-            _poses[0].WhenUnselected += () => HideVisuals();
-        }
-        private void ShowVisuals()
-        {
-            if (!Hmd.TryGetRootPose(out Pose hmdPose))
-            {
-                return;
-            }
-
-            Vector3 spawnSpot = hmdPose.position + hmdPose.forward;
-            _poseActiveVisuals[0].transform.position = spawnSpot;
-            _poseActiveVisuals[0].transform.LookAt(2 * _poseActiveVisuals[0].transform.position - hmdPose.position);
-
-            var hands = _poses[0].GetComponents<HandRef>();
-            Vector3 visualsPos = Vector3.zero;
-            foreach (var hand in hands)
-            {
-                hand.GetRootPose(out Pose wristPose);
-                Vector3 forward = hand.Handedness == Handedness.Left ? wristPose.right : -wristPose.right;
-                visualsPos += wristPose.position + forward * .15f + Vector3.up * .02f;
-            }
-            _poseActiveVisuals[0].transform.position = visualsPos / hands.Length;
-            _poseActiveVisuals[0].gameObject.SetActive(true);
+            _poses[0].WhenSelected += () => palmUp();
+            _poses[0].WhenUnselected += () => palmDown();
         }
 
-        private void HideVisuals()
+        private void palmUp()
         {
-            _poseActiveVisuals[0].gameObject.SetActive(false);
+            debug_text.text = "palm up";
+        }
+
+        private void palmDown()
+        {
+            debug_text.text = "palm down";
         }
     }
 }
