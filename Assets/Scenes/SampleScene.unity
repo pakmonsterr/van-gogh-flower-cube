@@ -246,7 +246,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109621278}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -1.6, z: 0}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -554,7 +554,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   confirm_btn: {fileID: 344158061}
   redo_btn: {fileID: 904117581}
-  LH_interaction: {fileID: 2429524574182512479}
   calibrated: 0
   _pose: {fileID: 7935958764962676891}
 --- !u!1 &309426832
@@ -699,7 +698,7 @@ MonoBehaviour:
   _data: {fileID: 0}
   _pointableElement: {fileID: 404672349}
   _surfacePatch: {fileID: 404672346}
-  _enterHoverNormal: 0.02
+  _enterHoverNormal: 0
   _enterHoverTangent: 0
   _exitHoverNormal: 0
   _exitHoverTangent: 0
@@ -709,8 +708,8 @@ MonoBehaviour:
     Enabled: 0
     MinNormal: 0.01
   _dragThresholds:
-    Enabled: 1
-    DragNormal: 0.01
+    Enabled: 0
+    DragNormal: 0.03
     DragTangent: 0.01
     DragEaseCurve:
       _animationCurve:
@@ -904,7 +903,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 404672344}
   m_LocalRotation: {x: 0.7071068, y: -0.000000009313225, z: 0.000000009313225, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0.45, z: 0}
   m_LocalScale: {x: 16.66668, y: 16.666674, z: 16.666655}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -924,7 +923,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _planeSurface: {fileID: 404672347}
-  _clippers: []
+  _clippers:
+  - {fileID: 404672348}
 --- !u!114 &404672347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -952,7 +952,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0, z: 0}
-  _size: {x: 0.06, y: 0.06, z: 0.06}
+  _size: {x: 0.06, y: 0.06, z: 0.001}
 --- !u!114 &404672349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1169,7 +1169,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439667459}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2054,7 +2054,7 @@ MonoBehaviour:
   _data: {fileID: 0}
   _pointableElement: {fileID: 1958495798}
   _surfacePatch: {fileID: 1958495795}
-  _enterHoverNormal: 0.02
+  _enterHoverNormal: 0
   _enterHoverTangent: 0
   _exitHoverNormal: 0
   _exitHoverTangent: 0
@@ -2064,8 +2064,8 @@ MonoBehaviour:
     Enabled: 0
     MinNormal: 0.01
   _dragThresholds:
-    Enabled: 1
-    DragNormal: 0.01
+    Enabled: 0
+    DragNormal: 0.03
     DragTangent: 0.01
     DragEaseCurve:
       _animationCurve:
@@ -2533,7 +2533,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112592813}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2890,7 +2890,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1349143451}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -1.6, z: 0}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3194,7 +3194,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _planeSurface: {fileID: 1958495796}
-  _clippers: []
+  _clippers:
+  - {fileID: 1958495797}
 --- !u!114 &1958495796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3222,7 +3223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0, z: 0}
-  _size: {x: 0.06, y: 0.06, z: 0.06}
+  _size: {x: 0.06, y: 0.06, z: 0.001}
 --- !u!114 &1958495798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3246,7 +3247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958495794}
   m_LocalRotation: {x: 0.7071068, y: -0.000000009313225, z: 0.000000009313225, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0.45, z: 0}
   m_LocalScale: {x: 16.66668, y: 16.666674, z: 16.666655}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19026,7 +19027,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6286255927541078844}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 24.58, y: 0, z: 10.37}
+  m_LocalPosition: {x: 16.52, y: 0, z: 8.35}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children:

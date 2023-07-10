@@ -10,7 +10,6 @@ public class palm_menu : MonoBehaviour
     // button stuff
     public GameObject confirm_btn;
     public GameObject redo_btn;
-    public GameObject LH_interaction;
     public bool calibrated = false;
     
     // pose stuff
@@ -27,7 +26,6 @@ public class palm_menu : MonoBehaviour
     
     private void palmUp()
     {
-        LH_interaction.SetActive(false);
         if (calibrated)
         {
             redo_btn.SetActive(true);
@@ -42,6 +40,5 @@ public class palm_menu : MonoBehaviour
     {
         redo_btn.SetActive(false);
         confirm_btn.SetActive(false);
-        LH_interaction.SetActive(true);
     }
 }
