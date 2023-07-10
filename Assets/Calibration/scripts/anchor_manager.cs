@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class anchor_manager : MonoBehaviour
 {
-    public OVRHand R_hand;
+    public TMP_Text debug_text;
     
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,11 @@ public class anchor_manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        debug_text.text = "not pressed";
+    }
+
+    public void onPress()
+    {
+        debug_text.text = "pressed";
     }
 }

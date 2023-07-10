@@ -35,13 +35,11 @@ namespace Oculus.Interaction.Samples
         
         private void palmUp()
         {
-            debug_text.text = "palm up";
             confirm_btn.SetActive(true);
         }
 
         private void palmDown()
         {
-            debug_text.text = "palm down";
             confirm_btn.SetActive(false);
         }
     }
