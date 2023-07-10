@@ -16,11 +16,16 @@ public class anchor_manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        debug_text.text = "not pressed";
+        
     }
 
     public void onPress()
     {
-        debug_text.text = "pressed";
+        //debug_text.text = "pressed";
+    }
+
+    public void onRelease()
+    {
+        //debug_text.text = "not pressed";
     }
 }
