@@ -2,45 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Oculus.Interaction.Input;
+using Oculus.Interaction;
 using UnityEngine.Assertions;
 
-namespace Oculus.Interaction.Samples
+public class palm_menu : MonoBehaviour
 {
-    public class palm_menu : MonoBehaviour
+    // button stuff
+    public GameObject confirm_btn;
+    public GameObject redo_btn;
+    public GameObject LH_interaction;
+    public bool calibrated = false;
+    
+    // pose stuff
+    [SerializeField]
+    private ActiveStateSelector _pose;
+
+    protected virtual void Start()
     {
-        public TMP_Text debug_text;
-        public GameObject confirm_btn;
-        
-        [SerializeField, Interface(typeof(IHmd))]
-        private UnityEngine.Object _hmd;
-        private IHmd Hmd { get; set; }
-
-        [SerializeField]
-        private ActiveStateSelector _pose;
-
-        protected virtual void Awake()
+        _pose.WhenSelected += () => palmUp();
+        _pose.WhenUnselected += () => palmDown();
+        confirm_btn.SetActive(false);
+        redo_btn.SetActive(false);
+    }
+    
+    private void palmUp()
+    {
+        LH_interaction.SetActive(false);
+        if (calibrated)
         {
-            Hmd = _hmd as IHmd;
+            redo_btn.SetActive(true);
         }
-
-        protected virtual void Start()
-        {
-            this.AssertField(Hmd, nameof(Hmd));
-            _pose.WhenSelected += () => palmUp();
-            _pose.WhenUnselected += () => palmDown();
-
-            confirm_btn.SetActive(false);
-        }
-        
-        private void palmUp()
+        else
         {
             confirm_btn.SetActive(true);
         }
+    }
 
-        private void palmDown()
-        {
-            confirm_btn.SetActive(false);
-        }
+    private void palmDown()
+    {
+        redo_btn.SetActive(false);
+        confirm_btn.SetActive(false);
+        LH_interaction.SetActive(true);
     }
 }
