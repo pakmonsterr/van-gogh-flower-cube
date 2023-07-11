@@ -23,8 +23,8 @@ public class anchor_manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
         //PlayerPrefs.DeleteAll();
-        checkMainAnchor();
         checkUuid();
 
         // make uuid from stored string, use that to load anchor
@@ -124,13 +124,5 @@ public class anchor_manager : MonoBehaviour
         {
             debug_text.text = "no main_uuid exists";
         }
-    }
-
-    private void checkMainAnchor()
-    {
-        if (spatial_anchor) return;
-
-        main_anchor.AddComponent<OVRSpatialAnchor>();
-        spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
     }
 }
