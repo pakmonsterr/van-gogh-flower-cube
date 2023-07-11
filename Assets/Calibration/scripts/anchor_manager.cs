@@ -23,6 +23,8 @@ public class anchor_manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //spatial_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
+        
         // add spatial anchor to holder if none exist
         if (!spatial_anchor)
         {
