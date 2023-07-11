@@ -30,8 +30,12 @@ public class anchor_manager : MonoBehaviour
     void Start()
     {
         spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
+
         //PlayerPrefs.DeleteAll();
-        checkUuid();
+        if (checkUuid())
+        {
+            Palm_menu.calibrated = true;
+        }
 
         // make uuid from stored string, use that to load anchor
         var main_uuid = new Guid(PlayerPrefs.GetString("main_uuid"));
@@ -43,6 +47,11 @@ public class anchor_manager : MonoBehaviour
             StorageLocation = OVRSpace.StorageLocation.Local,
             Uuids = uuids
         });
+
+        /*var uA = new OVRSpatialAnchor.UnboundAnchor();
+        uA = spatial_anchor;
+        var pose = uA.Pose;
+        debug_text.text = $"{pose.position}";*/
     }
 
     void Update()
@@ -51,9 +60,6 @@ public class anchor_manager : MonoBehaviour
 
     public void onPressConfirm()
     {
-        //debug_text.text = $"calib pressed";
-        Palm_menu.calibrated = true;
-
         // spawn main scene @ calib marker position & (corrected) rotation
         main_scene.transform.position = calib_marker.transform.position;
         main_scene.transform.rotation = calib_marker_rotation.transform.rotation;
@@ -77,8 +83,6 @@ public class anchor_manager : MonoBehaviour
 
             // save anchor to player prefs (persistent)
             PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
-
-            checkUuid();
         });
     }
 
@@ -166,15 +170,27 @@ public class anchor_manager : MonoBehaviour
         return hex.ToString();
     }
 
-    private void checkUuid()
+    private bool checkUuid()
     {
         if (PlayerPrefs.HasKey("main_uuid"))
         {
             debug_text.text = $"uuid exists: {PlayerPrefs.GetString("main_uuid")}";
+            return true;
         }
         else
         {
             debug_text.text = "no main_uuid exists";
+            return false;
         }
+    }
+
+    private void checkAnchor()
+    {
+        if (spatial_anchor)
+        {
+            debug_text.text = "anchor already exists";
+            return;
+        }
+        debug_text.text = "no existing anchor";
     }
 }
