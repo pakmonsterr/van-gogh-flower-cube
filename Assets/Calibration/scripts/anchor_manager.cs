@@ -25,13 +25,10 @@ public class anchor_manager : MonoBehaviour
     {
         spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
         
-        // add spatial anchor to holder if none exist
-        if (!spatial_anchor)
-        {
-            debug_text.text = "no existing anchor, added";
-            main_anchor.AddComponent<OVRSpatialAnchor>();
-            spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
-        }
+        PlayerPrefs.DeleteAll();
+        checkUuid();
+
+        
     }
 
     // Update is called once per frame
@@ -53,7 +50,7 @@ public class anchor_manager : MonoBehaviour
         main_scene.SetActive(true);
         calib_system.SetActive(false);
 
-        // save anchor (locally)
+        // save anchor locally
         spatial_anchor.Save((anchor, success) =>
         {
             if (!success)
@@ -64,7 +61,11 @@ public class anchor_manager : MonoBehaviour
             {
                 debug_text.text = $"anchor saved: {ConvertUuidToString(spatial_anchor.Uuid)}";
             }
-            //SaveUuidToPlayerPrefs(anchor.Uuid);
+
+            // save anchor to player pref (persistent)
+            PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
+
+            checkUuid();
         });
     }
 
@@ -75,7 +76,7 @@ public class anchor_manager : MonoBehaviour
         main_scene.SetActive(false);
         calib_system.SetActive(true);
         
-        // erase anchor
+        // erase anchor locally
         spatial_anchor.Erase((anchor, success) =>
         {
             if (!success)
@@ -105,5 +106,17 @@ public class anchor_manager : MonoBehaviour
         }
 
         return hex.ToString();
+    }
+
+    private void checkUuid()
+    {
+        if (PlayerPrefs.HasKey("main_uuid"))
+        {
+            debug_text.text = $"uuid exists: {PlayerPrefs.GetString("main_uuid")}";
+        }
+        else
+        {
+            debug_text.text = "no main_uuid exists";
+        }
     }
 }
