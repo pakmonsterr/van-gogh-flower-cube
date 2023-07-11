@@ -44,13 +44,9 @@ public class anchor_manager : MonoBehaviour
         //debug_text.text = $"calib pressed";
         Palm_menu.calibrated = true;
 
-        // set anchor holder with calib marker position & (corrected) rotation
-        anchor_holder.transform.position = calib_marker.transform.position;
-        anchor_holder.transform.rotation = calib_marker_rotation.transform.rotation;
-
-        // spawn main scene @ anchor position
-        main_scene.transform.position = anchor_holder.transform.position;
-        main_scene.transform.rotation = anchor_holder.transform.rotation;
+        // spawn main scene @ calib marker position & (corrected) rotation
+        main_scene.transform.position = calib_marker.transform.position;
+        main_scene.transform.rotation = calib_marker_rotation.transform.rotation;
 
         // system management stuff
         Palm_menu.calibrated = true;
