@@ -499,8 +499,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 307843496}
-  - component: {fileID: 307843495}
   - component: {fileID: 307843498}
+  - component: {fileID: 307843499}
   m_Layer: 0
   m_Name: Anchor Manager
   m_TagString: Untagged
@@ -508,23 +508,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &307843495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307843494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ed67efd4b2c654891fef1e43d470fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debug_text: {fileID: 1593489501}
-  main_scene: {fileID: 1638940201}
-  calib_marker: {fileID: 5405101849851713146}
-  calib_system: {fileID: 309426832}
-  Palm_menu: {fileID: 307843498}
 --- !u!4 &307843496
 Transform:
   m_ObjectHideFlags: 0
@@ -556,6 +539,24 @@ MonoBehaviour:
   redo_btn: {fileID: 904117581}
   calibrated: 0
   _pose: {fileID: 7935958764962676891}
+--- !u!114 &307843499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307843494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ed67efd4b2c654891fef1e43d470fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug_text: {fileID: 1593489501}
+  main_scene: {fileID: 1638940201}
+  calib_marker: {fileID: 5405101849851713146}
+  calib_marker_rotation: {fileID: 1660045911}
+  calib_system: {fileID: 309426832}
+  Palm_menu: {fileID: 307843498}
 --- !u!1 &309426832
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,7 +849,7 @@ MonoBehaviour:
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 307843495}
+      - m_Target: {fileID: 307843499}
         m_TargetAssemblyTypeName: anchor_manager, Assembly-CSharp
         m_MethodName: onPressConfirm
         m_Mode: 1
@@ -2204,7 +2205,7 @@ MonoBehaviour:
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 307843495}
+      - m_Target: {fileID: 307843499}
         m_TargetAssemblyTypeName: anchor_manager, Assembly-CSharp
         m_MethodName: onPressRedo
         m_Mode: 1
@@ -3161,6 +3162,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf7fd3e8a313db4dae07ccafc26e111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1660045911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1660045912}
+  m_Layer: 0
+  m_Name: calib_marker_rotation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1660045912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660045911}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4632259883201694912}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1958495794
 GameObject:
   m_ObjectHideFlags: 0
@@ -13227,7 +13259,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 1660045912}
   m_Father: {fileID: 309426833}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
