@@ -17,20 +17,20 @@ public class anchor_manager : MonoBehaviour
     public palm_menu Palm_menu;
 
     // anchor stuff
-    public GameObject anchor_holder;
+    public GameObject main_anchor;
     private OVRSpatialAnchor spatial_anchor;
     
     // Start is called before the first frame update
     void Start()
     {
-        //spatial_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
+        spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
         
         // add spatial anchor to holder if none exist
         if (!spatial_anchor)
         {
             debug_text.text = "no existing anchor, added";
-            anchor_holder.AddComponent<OVRSpatialAnchor>();
-            spatial_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
+            main_anchor.AddComponent<OVRSpatialAnchor>();
+            spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
         }
     }
 

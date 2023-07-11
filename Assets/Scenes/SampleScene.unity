@@ -557,7 +557,7 @@ MonoBehaviour:
   calib_marker_rotation: {fileID: 1660045911}
   calib_system: {fileID: 309426832}
   Palm_menu: {fileID: 307843498}
-  anchor_holder: {fileID: 1899292196}
+  main_anchor: {fileID: 1481803883}
 --- !u!1 &309426832
 GameObject:
   m_ObjectHideFlags: 0
