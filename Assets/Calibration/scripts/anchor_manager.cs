@@ -27,7 +27,6 @@ public class anchor_manager : MonoBehaviour
         
         PlayerPrefs.DeleteAll();
         checkUuid();
-
         
     }
 
@@ -62,7 +61,7 @@ public class anchor_manager : MonoBehaviour
                 debug_text.text = $"anchor saved: {ConvertUuidToString(spatial_anchor.Uuid)}";
             }
 
-            // save anchor to player pref (persistent)
+            // save anchor to player prefs (persistent)
             PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
 
             checkUuid();
@@ -88,6 +87,11 @@ public class anchor_manager : MonoBehaviour
             {
                 debug_text.text = $"anchor erased: {ConvertUuidToString(spatial_anchor.Uuid)}";
             }
+
+            // erase anchor from player prefs (persistent)
+            PlayerPrefs.DeleteKey("main_uuid");
+
+            checkUuid();
         });
     }
 
