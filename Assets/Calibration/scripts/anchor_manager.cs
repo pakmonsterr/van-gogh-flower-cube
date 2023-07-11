@@ -19,8 +19,14 @@ public class anchor_manager : MonoBehaviour
     // anchor stuff
     public GameObject main_anchor;
     private OVRSpatialAnchor spatial_anchor;
+    public OVRSpatialAnchor anchor_prefab;
+    Action<OVRSpatialAnchor.UnboundAnchor, bool> _onLoadAnchor;
     
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        _onLoadAnchor = OnLocalized;
+    }
+    
     void Start()
     {
         spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
@@ -29,10 +35,16 @@ public class anchor_manager : MonoBehaviour
 
         // make uuid from stored string, use that to load anchor
         var main_uuid = new Guid(PlayerPrefs.GetString("main_uuid"));
-        
+        var uuids = new Guid[1];
+        uuids[0] = main_uuid;
+        Load(new OVRSpatialAnchor.LoadOptions
+        {
+            Timeout = 0,
+            StorageLocation = OVRSpace.StorageLocation.Local,
+            Uuids = uuids
+        });
     }
 
-    // Update is called once per frame
     void Update()
     {
     }
@@ -95,6 +107,46 @@ public class anchor_manager : MonoBehaviour
 
             checkUuid();
         });
+    }
+
+    private void Load(OVRSpatialAnchor.LoadOptions options) => OVRSpatialAnchor.LoadUnboundAnchors(options, anchors =>
+    {
+        if (anchors == null)
+        {
+            debug_text.text = "Query failed.";
+            return;
+        }
+
+        foreach (var anchor in anchors)
+        {
+            if (anchor.Localized)
+            {
+                _onLoadAnchor(anchor, true);
+            }
+            else if (!anchor.Localizing)
+            {
+                anchor.Localize(_onLoadAnchor);
+            }
+        }
+    });
+
+    private void OnLocalized(OVRSpatialAnchor.UnboundAnchor unboundAnchor, bool success)
+    {
+        if (!success)
+        {
+            debug_text.text = $"{unboundAnchor} Localization failed!";
+            return;
+        }
+
+        var pose = unboundAnchor.Pose;
+        var spatialAnchor = Instantiate(anchor_prefab, pose.position, pose.rotation);
+        unboundAnchor.BindTo(spatialAnchor);
+
+        if (spatialAnchor.TryGetComponent<Anchor>(out var anchor))
+        {
+            // We just loaded it, so we know it exists in persistent storage.
+            anchor.ShowSaveIcon = true;
+        }
     }
 
     static string ConvertUuidToString(System.Guid guid)

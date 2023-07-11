@@ -558,6 +558,7 @@ MonoBehaviour:
   calib_system: {fileID: 309426832}
   Palm_menu: {fileID: 307843498}
   main_anchor: {fileID: 1481803883}
+  anchor_prefab: {fileID: 3354236514297470965, guid: cbd6efbdc5102a044bf11631bfccb0c1, type: 3}
 --- !u!1 &309426832
 GameObject:
   m_ObjectHideFlags: 0
