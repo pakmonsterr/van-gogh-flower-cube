@@ -2,25 +2,11 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 using TMPro;
 
 public class anchor_manager : MonoBehaviour
 {
-    // anchor data struct
-    [Serializable]
-    public class anchor_data
-    {
-        // handle representing anchor in this runtime
-        public ulong space_handle;
-
-        // name of instantiated prefab for this anchor
-        public string prefab_name;
-
-        // ref to gameobject instantiated in scene for this anchor
-        public GameObject instantiatedObject = null;
-    }
-
-
 
     // calibration system
     public TMP_Text debug_text;
@@ -29,11 +15,21 @@ public class anchor_manager : MonoBehaviour
     public GameObject calib_marker_rotation;
     public GameObject calib_system;
     public palm_menu Palm_menu;
+
+    // anchor stuff
+    public GameObject anchor_holder;
+    private OVRSpatialAnchor spatial_anchor;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        // add spatial anchor to holder if none exist
+        if (!spatial_anchor)
+        {
+            debug_text.text = "no existing anchor, added";
+            anchor_holder.AddComponent<OVRSpatialAnchor>();
+            spatial_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
+        }
     }
 
     // Update is called once per frame
@@ -43,41 +39,73 @@ public class anchor_manager : MonoBehaviour
 
     public void onPressConfirm()
     {
-        debug_text.text = $"calib pressed";
-        
+        //debug_text.text = $"calib pressed";
         Palm_menu.calibrated = true;
 
-        // turn calib_marker transform into OVRPose
-        OVRPose calib_pose = new OVRPose()
-        {
-            position = calib_marker.transform.position,
-            orientation = calib_marker_rotation.transform.rotation
-        };
+        // set anchor holder with calib marker position & (corrected) rotation
+        anchor_holder.transform.position = calib_marker.transform.position;
+        anchor_holder.transform.rotation = calib_marker_rotation.transform.rotation;
 
-        // convert pose to world coords
-        OVRPose world_calib_pose = OVRExtensions.ToWorldSpacePose(calib_pose);
+        // spawn main scene @ anchor position
+        main_scene.transform.position = anchor_holder.transform.position;
+        main_scene.transform.rotation = anchor_holder.transform.rotation;
 
-        main_scene.transform.position = world_calib_pose.position;
-        main_scene.transform.rotation = world_calib_pose.orientation;
+        // system management stuff
+        Palm_menu.calibrated = true;
         main_scene.SetActive(true);
         calib_system.SetActive(false);
 
-        /*// create info abt spatial anchor (time & position) that has same info as calib_marker
-        OVRPlugin.SpatialEntityAnchorCreateInfo createInfo = new OVRPlugin.SpatialEntityAnchorCreateInfo()
+        // save anchor (locally)
+        spatial_anchor.Save((anchor, success) =>
         {
-            Time = OVRPlugin.GetTimeInSeconds(),
-            BaseTracking = OVRPlugin.GetTrackingOriginType(),
-            PoseInSpace = controllerPose.ToPosef() //notice that we take the pose in tracking coordinates and convert it from left handed to right handed reference system
-        };*/
+            if (!success)
+            {
+                debug_text.text = "anchor save failed";
+            }
+            else
+            {
+                debug_text.text = $"anchor saved: {ConvertUuidToString(spatial_anchor.Uuid)}";
+            }
+            //SaveUuidToPlayerPrefs(anchor.Uuid);
+        });
     }
 
     public void onPressRedo()
-    {
-        debug_text.text = $"redo pressed";
-
+    {   
+        // system management stuff
+        Palm_menu.calibrated = false;
         main_scene.SetActive(false);
         calib_system.SetActive(true);
+        
+        // erase anchor
+        spatial_anchor.Erase((anchor, success) =>
+        {
+            if (!success)
+            {
+                debug_text.text = "anchor erase failed";
+                return;
+            }
+            else
+            {
+                debug_text.text = $"anchor erased: {ConvertUuidToString(spatial_anchor.Uuid)}";
+            }
+        });
+    }
 
-        Palm_menu.calibrated = false;
+    static string ConvertUuidToString(System.Guid guid)
+    {
+        var value = guid.ToByteArray();
+        StringBuilder hex = new StringBuilder(value.Length * 2 + 4);
+        for (int ii = 0; ii < value.Length; ++ii)
+        {
+            if (3 < ii && ii < 11 && ii % 2 == 0)
+            {
+                hex.Append("-");
+            }
+
+            hex.AppendFormat("{0:x2}", value[ii]);
+        }
+
+        return hex.ToString();
     }
 }
