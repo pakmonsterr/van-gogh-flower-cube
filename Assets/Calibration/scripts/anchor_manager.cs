@@ -10,6 +10,7 @@ public class anchor_manager : MonoBehaviour
 
     // calibration system
     public TMP_Text debug_text;
+    public TMP_Text debug_text_2;
     public GameObject main_scene;
     public GameObject calib_marker;
     public GameObject calib_system;
@@ -50,6 +51,7 @@ public class anchor_manager : MonoBehaviour
 
     void Update()
     {
+        checkUuid();
     }
 
     public void onPressConfirm()
@@ -158,12 +160,12 @@ public class anchor_manager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("main_uuid"))
         {
-            //debug_text.text = $"uuid exists: {PlayerPrefs.GetString("main_uuid")}";
+            debug_text_2.text = $"uuid exists: {PlayerPrefs.GetString("main_uuid")}";
             return true;
         }
         else
         {
-            //debug_text.text = "no main_uuid exists";
+            debug_text_2.text = "no main_uuid exists";
             return false;
         }
     }
@@ -185,7 +187,9 @@ public class anchor_manager : MonoBehaviour
             }
 
             // save anchor to player prefs (persistent)
-            //PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
+            PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
         });
+
+        checkUuid();
     }
 }
