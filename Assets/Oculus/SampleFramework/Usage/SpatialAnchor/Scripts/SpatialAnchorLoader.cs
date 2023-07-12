@@ -1,5 +1,5 @@
 // (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
-
+using TMPro;
 using System;
 using UnityEngine;
 
@@ -19,6 +19,9 @@ public class SpatialAnchorLoader : MonoBehaviour
     [SerializeField]
     OVRSpatialAnchor _anchorPrefab;
 
+    public TMP_Text debug_text;
+    public TMP_Text debug_text_2;
+
     Action<OVRSpatialAnchor.UnboundAnchor, bool> _onLoadAnchor;
 
     public void LoadAnchorsByUuid()
@@ -30,7 +33,7 @@ public class SpatialAnchorLoader : MonoBehaviour
         }
 
         var playerUuidCount = PlayerPrefs.GetInt(Anchor.NumUuidsPlayerPref);
-        Log($"Attempting to load {playerUuidCount} saved anchors.");
+        debug_text_2.text = $"Attempting to load {playerUuidCount} saved anchors.";
         if (playerUuidCount == 0)
             return;
 
@@ -87,6 +90,9 @@ public class SpatialAnchorLoader : MonoBehaviour
         }
 
         var pose = unboundAnchor.Pose;
+
+        debug_text.text = $"{pose.position}";
+
         var spatialAnchor = Instantiate(_anchorPrefab, pose.position, pose.rotation);
         unboundAnchor.BindTo(spatialAnchor);
 

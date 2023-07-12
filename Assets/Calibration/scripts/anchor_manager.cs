@@ -28,8 +28,7 @@ public class anchor_manager : MonoBehaviour
     
     void Start()
     {
-
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         if (checkUuid())
         {
             Palm_menu.calibrated = true;
@@ -39,6 +38,7 @@ public class anchor_manager : MonoBehaviour
             var main_uuid = new Guid(PlayerPrefs.GetString("main_uuid"));
             var uuids = new Guid[1];
             uuids[0] = main_uuid;
+
             Load(new OVRSpatialAnchor.LoadOptions
             {
                 Timeout = 0,
@@ -78,6 +78,9 @@ public class anchor_manager : MonoBehaviour
         Palm_menu.calibrated = false;
         main_scene.SetActive(false);
         calib_system.SetActive(true);
+
+        // get rid of anchor component in holder
+        Destroy(anchor_holder.GetComponent<OVRSpatialAnchor>());
         
         // erase anchor locally
         main_anchor.Erase((anchor, success) =>
@@ -94,8 +97,27 @@ public class anchor_manager : MonoBehaviour
 
             // erase anchor from player prefs (persistent)
             PlayerPrefs.DeleteKey("main_uuid");
+        });
+    }
 
-            checkUuid();
+    private IEnumerator waitThenSave(OVRSpatialAnchor anchor)
+    {
+        yield return new WaitForSeconds(0.05f);
+        
+        // save anchor locally
+        anchor.Save((anchor, success) =>
+        {
+            if (!success)
+            {
+                debug_text.text = "anchor save failed";
+            }
+            else
+            {
+                debug_text.text = $"anchor saved: {ConvertUuidToString(anchor.Uuid)}";
+            }
+
+            // save anchor to player prefs (persistent)
+            PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
         });
     }
 
@@ -129,7 +151,9 @@ public class anchor_manager : MonoBehaviour
         }
 
         var pose = unboundAnchor.Pose;
-        //debug_text.text = $"{pose.position}";
+        debug_text.text = $"{pose.position}";
+
+        anchor_holder.AddComponent<OVRSpatialAnchor>();
 
         //main_scene.transform.position = pose.position;
         //main_scene.transform.rotation = pose.rotation;
@@ -168,28 +192,5 @@ public class anchor_manager : MonoBehaviour
             debug_text_2.text = "no main_uuid exists";
             return false;
         }
-    }
-
-    private IEnumerator waitThenSave(OVRSpatialAnchor anchor)
-    {
-        yield return new WaitForSeconds(0.05f);
-        
-        // save anchor locally
-        anchor.Save((anchor, success) =>
-        {
-            if (!success)
-            {
-                debug_text.text = "anchor save failed";
-            }
-            else
-            {
-                debug_text.text = $"anchor saved: {ConvertUuidToString(anchor.Uuid)}";
-            }
-
-            // save anchor to player prefs (persistent)
-            PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
-        });
-
-        checkUuid();
     }
 }
