@@ -12,14 +12,12 @@ public class anchor_manager : MonoBehaviour
     public TMP_Text debug_text;
     public GameObject main_scene;
     public GameObject calib_marker;
-    public GameObject calib_marker_rotation;
     public GameObject calib_system;
     public palm_menu Palm_menu;
 
     // anchor stuff
-    public GameObject main_anchor;
-    private OVRSpatialAnchor spatial_anchor;
-    public OVRSpatialAnchor anchor_prefab;
+    public GameObject anchor_holder;
+    private OVRSpatialAnchor main_anchor;
     Action<OVRSpatialAnchor.UnboundAnchor, bool> _onLoadAnchor;
     
     private void Awake()
@@ -30,7 +28,7 @@ public class anchor_manager : MonoBehaviour
     void Start()
     {
 
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
         if (checkUuid())
         {
             Palm_menu.calibrated = true;
@@ -52,40 +50,24 @@ public class anchor_manager : MonoBehaviour
 
     void Update()
     {
-        debug_text.text = $"{spatial_anchor.transform.position}";
     }
 
     public void onPressConfirm()
     {
+        // add spatial anchor component to anchor holder, store anchor in main_anchor
+        anchor_holder.AddComponent<OVRSpatialAnchor>();
+        main_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
+        
         // spawn main scene @ calib marker position & (corrected) rotation
         main_scene.transform.position = calib_marker.transform.position;
-        main_scene.transform.rotation = calib_marker_rotation.transform.rotation;
+        main_scene.transform.eulerAngles = new Vector3 (0, calib_marker.transform.eulerAngles.y, 0);
 
         // system management stuff
         Palm_menu.calibrated = true;
         main_scene.SetActive(true);
         calib_system.SetActive(false);
 
-        // instantiate anchor prefab at calib spot & get anchor component to save
-        var calib_anchor_prefab = Instantiate(anchor_prefab, calib_marker.transform.position, calib_marker_rotation.transform.rotation);
-        spatial_anchor = calib_anchor_prefab.GetComponent<OVRSpatialAnchor>();
-        
-
-        // save anchor locally
-        spatial_anchor.Save((anchor, success) =>
-        {
-            if (!success)
-            {
-                debug_text.text = "anchor save failed";
-            }
-            else
-            {
-                debug_text.text = $"anchor saved: {ConvertUuidToString(spatial_anchor.Uuid)}";
-            }
-
-            // save anchor to player prefs (persistent)
-            PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
-        });
+        StartCoroutine(waitThenSave(main_anchor));
     }
 
     public void onPressRedo()
@@ -96,16 +78,16 @@ public class anchor_manager : MonoBehaviour
         calib_system.SetActive(true);
         
         // erase anchor locally
-        spatial_anchor.Erase((anchor, success) =>
+        main_anchor.Erase((anchor, success) =>
         {
             if (!success)
             {
-
+                debug_text.text = $"anchor erase failed";
                 return;
             }
             else
             {
-                debug_text.text = $"anchor erased: {ConvertUuidToString(spatial_anchor.Uuid)}";
+                debug_text.text = $"anchor erased: {ConvertUuidToString(main_anchor.Uuid)}";
             }
 
             // erase anchor from player prefs (persistent)
@@ -145,9 +127,14 @@ public class anchor_manager : MonoBehaviour
         }
 
         var pose = unboundAnchor.Pose;
-        debug_text.text = $"{pose.position}";
-        var spatialAnchor = Instantiate(anchor_prefab, pose.position, pose.rotation);
-        unboundAnchor.BindTo(spatialAnchor);
+        //debug_text.text = $"{pose.position}";
+
+        //main_scene.transform.position = pose.position;
+        //main_scene.transform.rotation = pose.rotation;
+        //main_scene.SetActive(true);
+
+        //var spatialAnchor = Instantiate(anchor_prefab, pose.position, pose.rotation);
+        //unboundAnchor.BindTo(spatialAnchor);
     }
 
     static string ConvertUuidToString(System.Guid guid)
@@ -171,23 +158,34 @@ public class anchor_manager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("main_uuid"))
         {
-            debug_text.text = $"uuid exists: {PlayerPrefs.GetString("main_uuid")}";
+            //debug_text.text = $"uuid exists: {PlayerPrefs.GetString("main_uuid")}";
             return true;
         }
         else
         {
-            debug_text.text = "no main_uuid exists";
+            //debug_text.text = "no main_uuid exists";
             return false;
         }
     }
 
-    private void checkAnchor()
+    private IEnumerator waitThenSave(OVRSpatialAnchor anchor)
     {
-        if (spatial_anchor)
+        yield return new WaitForSeconds(0.5f);
+        
+        // save anchor locally
+        anchor.Save((anchor, success) =>
         {
-            debug_text.text = "anchor already exists";
-            return;
-        }
-        debug_text.text = "no existing anchor";
+            if (!success)
+            {
+                debug_text.text = "anchor save failed";
+            }
+            else
+            {
+                debug_text.text = $"anchor saved: {ConvertUuidToString(anchor.Uuid)}";
+            }
+
+            // save anchor to player prefs (persistent)
+            //PlayerPrefs.SetString("main_uuid", anchor.Uuid.ToString());
+        });
     }
 }
