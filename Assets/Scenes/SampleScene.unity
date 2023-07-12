@@ -559,6 +559,7 @@ MonoBehaviour:
   Palm_menu: {fileID: 307843498}
   main_anchor: {fileID: 1481803883}
   anchor_prefab: {fileID: 3354236514297470965, guid: cbd6efbdc5102a044bf11631bfccb0c1, type: 3}
+  calib_anchor_prefab: {fileID: 0}
 --- !u!1 &309426832
 GameObject:
   m_ObjectHideFlags: 0
@@ -3218,6 +3219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1660045912}
+  - component: {fileID: 1660045913}
   m_Layer: 0
   m_Name: calib_marker_rotation
   m_TagString: Untagged
@@ -3240,6 +3242,18 @@ Transform:
   m_Father: {fileID: 4632259883201694912}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &1660045913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660045911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34e0461a4939d3b4fbdf706bbd80108c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1958495794
 GameObject:
   m_ObjectHideFlags: 0
@@ -6858,7 +6872,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3023245650343843728}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.58, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.10000001, z: 0.10000001}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -19107,7 +19121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6286255927541078844}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.52, y: 0, z: 8.35}
+  m_LocalPosition: {x: 16.52, y: -0.58, z: 8.35}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children:

@@ -29,33 +29,30 @@ public class anchor_manager : MonoBehaviour
     
     void Start()
     {
-        spatial_anchor = main_anchor.GetComponent<OVRSpatialAnchor>();
 
         //PlayerPrefs.DeleteAll();
         if (checkUuid())
         {
             Palm_menu.calibrated = true;
+            calib_system.SetActive(false);
+
+            // make uuid from stored string, use that to load anchor
+            var main_uuid = new Guid(PlayerPrefs.GetString("main_uuid"));
+            var uuids = new Guid[1];
+            uuids[0] = main_uuid;
+            Load(new OVRSpatialAnchor.LoadOptions
+            {
+                Timeout = 0,
+                StorageLocation = OVRSpace.StorageLocation.Local,
+                Uuids = uuids
+            });
         }
 
-        // make uuid from stored string, use that to load anchor
-        var main_uuid = new Guid(PlayerPrefs.GetString("main_uuid"));
-        var uuids = new Guid[1];
-        uuids[0] = main_uuid;
-        Load(new OVRSpatialAnchor.LoadOptions
-        {
-            Timeout = 0,
-            StorageLocation = OVRSpace.StorageLocation.Local,
-            Uuids = uuids
-        });
-
-        /*var uA = new OVRSpatialAnchor.UnboundAnchor();
-        uA = spatial_anchor;
-        var pose = uA.Pose;
-        debug_text.text = $"{pose.position}";*/
     }
 
     void Update()
     {
+        debug_text.text = $"{spatial_anchor.transform.position}";
     }
 
     public void onPressConfirm()
@@ -68,6 +65,11 @@ public class anchor_manager : MonoBehaviour
         Palm_menu.calibrated = true;
         main_scene.SetActive(true);
         calib_system.SetActive(false);
+
+        // instantiate anchor prefab at calib spot & get anchor component to save
+        var calib_anchor_prefab = Instantiate(anchor_prefab, calib_marker.transform.position, calib_marker_rotation.transform.rotation);
+        spatial_anchor = calib_anchor_prefab.GetComponent<OVRSpatialAnchor>();
+        
 
         // save anchor locally
         spatial_anchor.Save((anchor, success) =>
@@ -98,7 +100,7 @@ public class anchor_manager : MonoBehaviour
         {
             if (!success)
             {
-                debug_text.text = "anchor erase failed";
+
                 return;
             }
             else
@@ -143,14 +145,9 @@ public class anchor_manager : MonoBehaviour
         }
 
         var pose = unboundAnchor.Pose;
+        debug_text.text = $"{pose.position}";
         var spatialAnchor = Instantiate(anchor_prefab, pose.position, pose.rotation);
         unboundAnchor.BindTo(spatialAnchor);
-
-        if (spatialAnchor.TryGetComponent<Anchor>(out var anchor))
-        {
-            // We just loaded it, so we know it exists in persistent storage.
-            anchor.ShowSaveIcon = true;
-        }
     }
 
     static string ConvertUuidToString(System.Guid guid)
