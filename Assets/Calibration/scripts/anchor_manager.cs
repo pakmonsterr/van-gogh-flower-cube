@@ -170,7 +170,7 @@ public class anchor_manager : MonoBehaviour
 
     private IEnumerator waitThenSave(OVRSpatialAnchor anchor)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.05f);
         
         // save anchor locally
         anchor.Save((anchor, success) =>
