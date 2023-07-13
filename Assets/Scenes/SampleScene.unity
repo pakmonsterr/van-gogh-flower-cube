@@ -504,7 +504,7 @@ MonoBehaviour:
   calib_marker: {fileID: 5405101849851713146}
   calib_system: {fileID: 309426832}
   Palm_menu: {fileID: 307843498}
-  anchor_holder: {fileID: 235796515}
+  Controller_menu: {fileID: 0}
 --- !u!1 &309426832
 GameObject:
   m_ObjectHideFlags: 0
@@ -6165,6 +6165,7 @@ GameObject:
   - component: {fileID: 5602775318964757960}
   - component: {fileID: 7885107517225826566}
   - component: {fileID: 1823027701069419687}
+  - component: {fileID: 7885107517225826567}
   m_Layer: 0
   m_Name: RightController
   m_TagString: Untagged
@@ -21036,6 +21037,18 @@ MonoBehaviour:
   _updateAfter: {fileID: 905404199060777516}
   _iModifyDataFromSourceMono: {fileID: 905404199060777516}
   _applyModifier: 0
+--- !u!114 &7885107517225826567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820161446666246941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e457c2cef0be9344da667d17953a1f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7935958764962676891
 MonoBehaviour:
   m_ObjectHideFlags: 0

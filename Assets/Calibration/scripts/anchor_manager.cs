@@ -15,6 +15,7 @@ public class anchor_manager : MonoBehaviour
     public GameObject calib_marker;
     public GameObject calib_system;
     public palm_menu Palm_menu;
+    public controller_menu Controller_menu;
 
     // anchor stuff
     private OVRSpatialAnchor main_anchor;
