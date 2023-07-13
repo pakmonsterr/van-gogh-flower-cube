@@ -21,7 +21,7 @@ public class anchor_manager : MonoBehaviour
     private OVRSpatialAnchor main_anchor;
     Action<OVRSpatialAnchor.UnboundAnchor, bool> _onLoadAnchor;
 
-    public OVRSpatialAnchor anchor_prefab;
+ 
     
     private void Awake()
     {
@@ -30,7 +30,6 @@ public class anchor_manager : MonoBehaviour
     
     void Start()
     {
-        //PlayerPrefs.DeleteAll();
         if (checkUuid())
         {
             Palm_menu.calibrated = true;
@@ -53,8 +52,7 @@ public class anchor_manager : MonoBehaviour
 
     void Update()
     {
-        //checkUuid();
-        checkAnchorComp();
+        checkUuid();
     }
 
     public void onPressConfirm()
@@ -98,7 +96,7 @@ public class anchor_manager : MonoBehaviour
             }
             else
             {
-                //debug_text.text = $"anchor erased: {ConvertUuidToString(main_anchor.Uuid)}";
+                debug_text.text = $"anchor erased: {ConvertUuidToString(main_anchor.Uuid)}";
             }
 
             // erase anchor from player prefs (persistent)
@@ -119,7 +117,7 @@ public class anchor_manager : MonoBehaviour
             }
             else
             {
-                //debug_text.text = $"anchor saved: {ConvertUuidToString(anchor.Uuid)}";
+                debug_text.text = $"anchor saved: {ConvertUuidToString(anchor.Uuid)}";
             }
 
             // save anchor to player prefs (persistent)
@@ -157,7 +155,6 @@ public class anchor_manager : MonoBehaviour
         }
 
         var pose = unboundAnchor.Pose;
-        debug_text.text = $"{pose.position}";
 
         anchor_holder.transform.position = pose.position;
         anchor_holder.transform.rotation = pose.rotation;
@@ -169,7 +166,6 @@ public class anchor_manager : MonoBehaviour
         main_scene.transform.rotation = pose.rotation;
         main_scene.SetActive(true);
 
-        //var spatialAnchor = Instantiate(anchor_prefab, pose.position, pose.rotation);
         unboundAnchor.BindTo(main_anchor);
     }
 
@@ -201,18 +197,6 @@ public class anchor_manager : MonoBehaviour
         {
             debug_text_2.text = "no main_uuid exists";
             return false;
-        }
-    }
-
-    private void checkAnchorComp()
-    {
-        if (anchor_holder.TryGetComponent<OVRSpatialAnchor>(out OVRSpatialAnchor anchor))
-        {
-            debug_text_2.text = $"anchor exists \nmain: {main_anchor.transform.position} \nholder: {anchor_holder.transform.position} \nanchor: {anchor.transform.position}";
-        }
-        else
-        {
-            debug_text_2.text = $"no anchor exists \nmain: {main_anchor.transform.position} \nholder: {anchor_holder.transform.position} \nanchor: {anchor.transform.position}";
         }
     }
 }
