@@ -1,16 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class place_marker : MonoBehaviour
 {
-    [AddComponentMenu("Scripts/MRTK/Examples/centerOnPointerEvent")]
-    public TMP_Text debug_text;
-
-    // broader control
-    //bool marker_placed;
-
     // hand & controller
     public OVRHand R_hand;
     public OVRHand L_hand;
@@ -24,12 +17,6 @@ public class place_marker : MonoBehaviour
     public GameObject calib_marker;
     public LineRenderer calib_ray_LR;
     Vector3[] calib_ray_coords = new Vector3[2];
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -37,8 +24,6 @@ public class place_marker : MonoBehaviour
         // detect if hand or controller is being used, set active game object accordingly
         hand_tracking = OVRPlugin.GetHandTrackingEnabled();
         R_active = hand_tracking ? R_hand_obj : R_controller_obj;
-
-        //debug_text.text = $"{R_hand.HandConfidence == OVRHand.TrackingConfidence.High}";
 
         if (hand_tracking) 
         {

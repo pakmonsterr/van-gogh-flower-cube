@@ -7,7 +7,6 @@ using TMPro;
 
 public class anchor_manager : MonoBehaviour
 {
-
     // calibration system
     public TMP_Text debug_text;
     public TMP_Text debug_text_2;
@@ -15,7 +14,6 @@ public class anchor_manager : MonoBehaviour
     public GameObject calib_marker;
     public GameObject calib_system;
     public palm_menu Palm_menu;
-    public controller_menu Controller_menu;
 
     // anchor stuff
     private OVRSpatialAnchor main_anchor;
@@ -179,7 +177,7 @@ public class anchor_manager : MonoBehaviour
         return hex.ToString();
     }
 
-    private bool checkUuid()
+    public bool checkUuid()
     {
         if (PlayerPrefs.HasKey("main_uuid"))
         {

@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using Oculus.Interaction;
-using UnityEngine.Assertions;
 
 public class palm_menu : MonoBehaviour
 {
