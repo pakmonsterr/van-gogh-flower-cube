@@ -505,7 +505,6 @@ MonoBehaviour:
   calib_system: {fileID: 309426832}
   Palm_menu: {fileID: 307843498}
   anchor_holder: {fileID: 235796515}
-  anchor_prefab: {fileID: 3354236514297470965, guid: cbd6efbdc5102a044bf11631bfccb0c1, type: 3}
 --- !u!1 &309426832
 GameObject:
   m_ObjectHideFlags: 0
@@ -3123,7 +3122,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1638940205}
   - component: {fileID: 1638940206}
-  - component: {fileID: 1638940207}
   m_Layer: 0
   m_Name: MAIN SCENE
   m_TagString: Untagged
@@ -3158,18 +3156,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbf7fd3e8a313db4dae07ccafc26e111, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1638940207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1638940201}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34e0461a4939d3b4fbdf706bbd80108c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1660045911

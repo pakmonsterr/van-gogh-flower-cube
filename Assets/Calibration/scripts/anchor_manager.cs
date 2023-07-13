@@ -52,26 +52,31 @@ public class anchor_manager : MonoBehaviour
 
     void Update()
     {
-        checkUuid();
+        //checkUuid();
     }
 
     public void onPressConfirm()
     {
         // add spatial anchor component to anchor holder, store anchor in main_anchor
-        anchor_holder.transform.position = calib_marker.transform.position;
-        anchor_holder.transform.eulerAngles = new Vector3 (0, calib_marker.transform.eulerAngles.y, 0);
+        //anchor_holder.transform.position = calib_marker.transform.position;
+        //anchor_holder.transform.eulerAngles = new Vector3 (0, calib_marker.transform.eulerAngles.y, 0);
 
-        anchor_holder.AddComponent<OVRSpatialAnchor>();
-        main_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
+        //anchor_holder.AddComponent<OVRSpatialAnchor>();
+        //main_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
         
         // spawn main scene @ calib marker position & (corrected) rotation
         main_scene.transform.position = calib_marker.transform.position;
         main_scene.transform.eulerAngles = new Vector3 (0, calib_marker.transform.eulerAngles.y, 0);
 
+        main_scene.AddComponent<OVRSpatialAnchor>();
+        main_anchor = main_scene.GetComponent<OVRSpatialAnchor>();
+
         // system management stuff
         Palm_menu.calibrated = true;
         main_scene.SetActive(true);
         calib_system.SetActive(false);
+
+        debug_text.text = "test 1";
 
         StartCoroutine(waitThenSave(main_anchor));
     }
@@ -84,7 +89,8 @@ public class anchor_manager : MonoBehaviour
         calib_system.SetActive(true);
 
         // get rid of anchor component in holder
-        Destroy(anchor_holder.GetComponent<OVRSpatialAnchor>());
+        //Destroy(anchor_holder.GetComponent<OVRSpatialAnchor>());
+        Destroy(main_scene.GetComponent<OVRSpatialAnchor>());
         
         // erase anchor locally
         main_anchor.Erase((anchor, success) =>
@@ -104,13 +110,15 @@ public class anchor_manager : MonoBehaviour
         });
     }
 
-    private IEnumerator waitThenSave(OVRSpatialAnchor anchor)
+    private IEnumerator waitThenSave(OVRSpatialAnchor spatial_anchor)
     {
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(1.0f);
         
         // save anchor locally
-        anchor.Save((anchor, success) =>
+        spatial_anchor.Save((anchor, success) =>
         {
+            debug_text.text = $"hnnnnn";
+            
             if (!success)
             {
                 debug_text.text = "anchor save failed";
@@ -156,15 +164,18 @@ public class anchor_manager : MonoBehaviour
 
         var pose = unboundAnchor.Pose;
 
-        anchor_holder.transform.position = pose.position;
-        anchor_holder.transform.rotation = pose.rotation;
-        anchor_holder.AddComponent<OVRSpatialAnchor>();
-        main_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
+        //anchor_holder.transform.position = pose.position;
+        //anchor_holder.transform.rotation = pose.rotation;
+        //anchor_holder.AddComponent<OVRSpatialAnchor>();
+        //main_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
 
 
         main_scene.transform.position = pose.position;
         main_scene.transform.rotation = pose.rotation;
         main_scene.SetActive(true);
+
+        main_scene.AddComponent<OVRSpatialAnchor>();
+        main_anchor = main_scene.GetComponent<OVRSpatialAnchor>();
 
         unboundAnchor.BindTo(main_anchor);
     }
