@@ -85,12 +85,12 @@ public class anchor_manager : MonoBehaviour
         {
             if (!success)
             {
-                debug_text.text = $"anchor erase failed";
+                //debug_text.text = $"anchor erase failed";
                 return;
             }
             else
             {
-                debug_text.text = $"anchor erased: {ConvertUuidToString(main_anchor.Uuid)}";
+                //debug_text.text = $"anchor erased: {ConvertUuidToString(main_anchor.Uuid)}";
             }
 
             // erase anchor from player prefs (persistent)
@@ -107,11 +107,11 @@ public class anchor_manager : MonoBehaviour
         {
             if (!success)
             {
-                debug_text.text = "anchor save failed";
+                //debug_text.text = "anchor save failed";
             }
             else
             {
-                debug_text.text = $"anchor saved: {ConvertUuidToString(anchor.Uuid)}";
+                //debug_text.text = $"anchor saved: {ConvertUuidToString(anchor.Uuid)}";
             }
 
             // save anchor to player prefs (persistent)
@@ -123,7 +123,7 @@ public class anchor_manager : MonoBehaviour
     {
         if (anchors == null)
         {
-            debug_text.text = "Query failed.";
+            //debug_text.text = "Query failed.";
             return;
         }
 
@@ -144,7 +144,7 @@ public class anchor_manager : MonoBehaviour
     {
         if (!success)
         {
-            debug_text.text = $"{unboundAnchor} Localization failed!";
+            //debug_text.text = $"{unboundAnchor} Localization failed!";
             return;
         }
 
@@ -181,12 +181,12 @@ public class anchor_manager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("main_uuid"))
         {
-            debug_text_2.text = $"uuid exists: {PlayerPrefs.GetString("main_uuid")}";
+            //debug_text_2.text = $"uuid exists: {PlayerPrefs.GetString("main_uuid")}";
             return true;
         }
         else
         {
-            debug_text_2.text = "no main_uuid exists";
+            //debug_text_2.text = "no main_uuid exists";
             return false;
         }
     }
