@@ -17,7 +17,6 @@ public class anchor_manager : MonoBehaviour
     public palm_menu Palm_menu;
 
     // anchor stuff
-    public GameObject anchor_holder;
     private OVRSpatialAnchor main_anchor;
     Action<OVRSpatialAnchor.UnboundAnchor, bool> _onLoadAnchor;
 
@@ -52,22 +51,15 @@ public class anchor_manager : MonoBehaviour
 
     void Update()
     {
-        //checkUuid();
     }
 
     public void onPressConfirm()
     {
-        // add spatial anchor component to anchor holder, store anchor in main_anchor
-        //anchor_holder.transform.position = calib_marker.transform.position;
-        //anchor_holder.transform.eulerAngles = new Vector3 (0, calib_marker.transform.eulerAngles.y, 0);
-
-        //anchor_holder.AddComponent<OVRSpatialAnchor>();
-        //main_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
-        
         // spawn main scene @ calib marker position & (corrected) rotation
         main_scene.transform.position = calib_marker.transform.position;
         main_scene.transform.eulerAngles = new Vector3 (0, calib_marker.transform.eulerAngles.y, 0);
 
+        // add spatial anchor component to anchor holder, store anchor in main_anchor
         main_scene.AddComponent<OVRSpatialAnchor>();
         main_anchor = main_scene.GetComponent<OVRSpatialAnchor>();
 
@@ -75,8 +67,6 @@ public class anchor_manager : MonoBehaviour
         Palm_menu.calibrated = true;
         main_scene.SetActive(true);
         calib_system.SetActive(false);
-
-        debug_text.text = "test 1";
 
         StartCoroutine(waitThenSave(main_anchor));
     }
@@ -88,8 +78,7 @@ public class anchor_manager : MonoBehaviour
         main_scene.SetActive(false);
         calib_system.SetActive(true);
 
-        // get rid of anchor component in holder
-        //Destroy(anchor_holder.GetComponent<OVRSpatialAnchor>());
+        // get rid of anchor component
         Destroy(main_scene.GetComponent<OVRSpatialAnchor>());
         
         // erase anchor locally
@@ -117,8 +106,6 @@ public class anchor_manager : MonoBehaviour
         // save anchor locally
         spatial_anchor.Save((anchor, success) =>
         {
-            debug_text.text = $"hnnnnn";
-            
             if (!success)
             {
                 debug_text.text = "anchor save failed";
@@ -163,12 +150,6 @@ public class anchor_manager : MonoBehaviour
         }
 
         var pose = unboundAnchor.Pose;
-
-        //anchor_holder.transform.position = pose.position;
-        //anchor_holder.transform.rotation = pose.rotation;
-        //anchor_holder.AddComponent<OVRSpatialAnchor>();
-        //main_anchor = anchor_holder.GetComponent<OVRSpatialAnchor>();
-
 
         main_scene.transform.position = pose.position;
         main_scene.transform.rotation = pose.rotation;
