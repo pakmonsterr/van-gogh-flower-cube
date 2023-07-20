@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
-    path: Assets/Scenes/SpatialAnchor.unity
-    guid: 1db179c458352bf46beb307fd047d589
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: c5094a13ee370d8449a3d78e95a545e7, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 48882d5fa23d7e3469303bb78d7311ae, type: 2}
