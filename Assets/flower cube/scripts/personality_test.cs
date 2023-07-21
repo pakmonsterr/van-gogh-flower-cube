@@ -38,28 +38,76 @@ public class personality_test : MonoBehaviour
             return ((btn_pressed == 0) ? next_st_0 : next_st_1);
         }
     };
+
+    public struct endState
+    {
+        public endState(GameObject end_cube, string end_title, string end_text)
+        {
+            cube = end_cube;
+            title = end_title;
+            body_text = end_text;
+        }
+
+        public GameObject cube { get; }
+        public string title { get; }
+        public string body_text { get; }
+
+        public void endScreen()
+        {
+            cube.SetActive(true);
+            end_title_text.text = "You got: " + title;
+            end_body_text.text = body_text;
+        }
+
+        public void deactivateCube()
+        {
+            cube.SetActive(false);
+        }
+    }
     
     static TMP_Text q_text;
     static TMP_Text a0_text;
     static TMP_Text a1_text;
+    static TMP_Text end_title_text;
+    static TMP_Text end_body_text;
 
-    public GameObject start;
-    public GameObject question;
-    public GameObject answer_0;
-    public GameObject answer_1;
+    public GameObject start_ui;
+    public GameObject question_ui;
+    public GameObject answer_0_ui;
+    public GameObject answer_1_ui;
+    public GameObject end_ui;
+    public GameObject end_frame;
 
     private State[] state_array;
     private int state;
     private Stack<int> prev_states = new Stack<int>();
+    private int num_questions;
+    private endState[] end_state_array;
 
-    private bool started = false;
+    private bool started;
+    private bool ended;
+
+    public GameObject end_cube_1;
+    public GameObject end_cube_2;
+    public GameObject end_cube_3;
+    public GameObject end_cube_4;
+    public GameObject end_cube_5;
+    public GameObject end_cube_6;
+    public GameObject end_cube_7;
+    public GameObject end_cube_8;
+    public GameObject end_cube_9;
+    public GameObject end_cube_10;
+    public GameObject end_cube_11;
     
     // Start is called before the first frame update
     void Start()
     {
-        q_text = question.transform.GetChild(0).GetComponent<TMP_Text>();
-        a0_text = answer_0.transform.GetChild(0).GetComponent<TMP_Text>();
-        a1_text = answer_1.transform.GetChild(0).GetComponent<TMP_Text>();
+        q_text = question_ui.transform.GetChild(0).GetComponent<TMP_Text>();
+        a0_text = answer_0_ui.transform.GetChild(0).GetComponent<TMP_Text>();
+        a1_text = answer_1_ui.transform.GetChild(0).GetComponent<TMP_Text>();
+        end_title_text = end_ui.transform.GetChild(1).GetComponent<TMP_Text>();
+        end_body_text = end_ui.transform.GetChild(2).GetComponent<TMP_Text>();
+
 
         state_array = new State[] { new State(1, 2, 4,
                                         "When confronted in a dark alley, your first inclination is to...",
@@ -118,36 +166,77 @@ public class personality_test : MonoBehaviour
                                         "Uh... yes?",
                                         "I need to inject morphine IN MY EYE")
                                     };
+
+        end_state_array = new endState[] {  new endState(end_cube_1,
+                                                "No one",
+                                                "You are literally the worst fighter on the planet, even behind the 500 million people under the age of three. You should be terrified of everything and everyone."),
+                                            new endState(end_cube_2,
+                                                "A baby",
+                                                "Ok so you can only beat up a baby. If you're also a baby, congrats! If not, maybe lay low for a while until this blows over."),  
+                                            new endState(end_cube_3,
+                                                "Coked-out 80's pro wrestler",
+                                                "While more impressive than a baby, these washed u nobodies would die on their own if they weren't constantly monitored by a team of medical professionals, so don't get on your high horse."),  
+                                            new endState(end_cube_4,
+                                                "Football player",
+                                                "You can beat up a football player, but he plays for the Buffalo Bills, so no one's impressed."),  
+                                            new endState(end_cube_5,
+                                                "A sizeable group of innocent people",
+                                                "Just stay away from me! Are you in the room? I can hear someone breathing. ARE YOU IN HERE? Oh god the lights just went off and I--"),  
+                                            new endState(end_cube_6,
+                                                "",
+                                                ""),  
+                                            new endState(end_cube_7,
+                                                "",
+                                                ""),  
+                                            new endState(end_cube_8,
+                                                "",
+                                                ""),  
+                                            new endState(end_cube_9,
+                                                "",
+                                                ""),  
+                                            new endState(end_cube_10,
+                                                "",
+                                                ""),  
+                                            new endState(end_cube_11,
+                                                "",
+                                                "")
+                                        };    
+
+        num_questions = state_array.Length;
+
+        startTest();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (OVRInput.GetDown(OVRInput.RawButton.A))
+        if (ended)
         {
-            if (started)
+            if (OVRInput.GetDown(OVRInput.RawButton.Y))
+            {
+                end_state_array[state - 1 - num_questions].deactivateCube();
+                startTest();
+            }
+            else return;
+        }
+        else if (started)
+        {
+            if (OVRInput.GetDown(OVRInput.RawButton.A))
             {
                 changeStates(0);
             }
-            else
+            else if (OVRInput.GetDown(OVRInput.RawButton.B))
             {
-                start.SetActive(false);
-                answer_0.SetActive(true);
-                answer_1.SetActive(true);
-
-                state = 1;
-                state_array[state - 1].printText();
-                
-                started = true;
+                changeStates(1);
+            }
+            else if (OVRInput.GetDown(OVRInput.RawButton.X))
+            {
+                changeStates(2);
             }
         }
-        else if (OVRInput.GetDown(OVRInput.RawButton.B) && started)
+        else if (!started && OVRInput.GetDown(OVRInput.RawButton.A))
         {
-            changeStates(1);
-        }
-        else if (OVRInput.GetDown(OVRInput.RawButton.X) && started)
-        {
-            changeStates(2);
+            enterTest();
         }
     }
 
@@ -162,7 +251,59 @@ public class personality_test : MonoBehaviour
         {
             prev_states.Push(state);
             state = state_array[state - 1].nextState(btn_press);
-            state_array[state - 1].printText();
+            if (state > num_questions)
+            {
+                endTest();
+            }
+            else
+            {
+                state_array[state - 1].printText();
+            }
         }
+    }
+
+    void startTest()
+    {
+        start_ui.SetActive(true);
+        answer_0_ui.SetActive(false);
+        answer_1_ui.SetActive(false);
+        question_ui.SetActive(false);
+        end_ui.SetActive(false);
+        end_frame.SetActive(false);
+        
+        started = false;
+        ended = false;
+
+        state = 1;
+    }
+
+    void enterTest()
+    {
+        start_ui.SetActive(false);
+        answer_0_ui.SetActive(true);
+        answer_1_ui.SetActive(true);
+        question_ui.SetActive(true);
+        end_ui.SetActive(false);
+        end_frame.SetActive(false);
+
+        started = true;
+        ended = false;
+
+        state_array[state - 1].printText();
+    }
+
+    void endTest()
+    {
+        start_ui.SetActive(false);
+        answer_0_ui.SetActive(false);
+        answer_1_ui.SetActive(false);
+        question_ui.SetActive(false);
+        end_frame.SetActive(true);
+        end_ui.SetActive(true);
+
+        started = true;
+        ended = true;
+
+        end_state_array[state - 1 - num_questions].endScreen();
     }
 }
