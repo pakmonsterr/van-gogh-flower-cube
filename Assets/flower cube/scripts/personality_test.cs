@@ -163,7 +163,7 @@ public class personality_test : MonoBehaviour
                                         "Duh",
                                         "... no"),
                                     new State(14, 18, 19,
-                                        "So you might be going to kail for violent crime?",
+                                        "So you might be going to jail for violent crime?",
                                         "Uh... yes?",
                                         "I need to inject morphine IN MY EYE")
                                     };
@@ -185,7 +185,7 @@ public class personality_test : MonoBehaviour
                                                 "Just stay away from me! Are you in the room? I can hear someone breathing. ARE YOU IN HERE? Oh god the lights just went off and I--"),  
                                             new endState(end_cube_6,
                                                 "",
-                                                ""),  
+                                                ""),
                                             new endState(end_cube_7,
                                                 "",
                                                 ""),  
@@ -215,8 +215,7 @@ public class personality_test : MonoBehaviour
         {
             if (OVRInput.GetDown(OVRInput.RawButton.Y))
             {
-                end_state_array[state - 1 - num_questions].deactivateCube();
-                startTest();
+                StartCoroutine(restartTest());
             }
             else return;
         }
@@ -241,42 +240,18 @@ public class personality_test : MonoBehaviour
         }
     }
 
-    IEnumerator changeStates(int btn_press)
+    IEnumerator pressButton(Transform button) 
     {
-        if (btn_press == 2)
-        {
-            answer_0_ui.GetComponent<Image>().color = new Color32(0,0,0,174);
-            answer_1_ui.GetComponent<Image>().color = new Color32(0,0,0,174);
+        button.GetComponent<Image>().color = new Color32(0,166,17,174);
 
-            state = prev_states.Pop();
-            state_array[state - 1].printText();
-        }
-        else 
-        {
-            Image btn_bkg = (btn_press == 0) ? answer_0_ui.GetComponent<Image>() : answer_1_ui.GetComponent<Image>();
-            btn_bkg.color = new Color32(0,166,17,174);
-
-            yield return new WaitForSeconds(0.5f);
-
-            prev_states.Push(state);
-            state = state_array[state - 1].nextState(btn_press);
-
-            if (state > num_questions)
-            {
-                endTest();
-            }
-            else
-            {
-                btn_bkg.color = new Color32(0,0,0,174);
-                state_array[state - 1].printText();
-            }
-        }
+        yield return new WaitForSeconds(0.5f);
+            
+        button.GetComponent<Image>().color = new Color32(0,0,0,174);
     }
+
 
     void startTest()
     {
-        start_ui.GetComponent<Image>().color = new Color32(0,0,0,174);
-        
         start_ui.SetActive(true);
         answer_0_ui.SetActive(false);
         answer_1_ui.SetActive(false);
@@ -292,9 +267,7 @@ public class personality_test : MonoBehaviour
 
     IEnumerator enterTest()
     {
-        start_ui.GetComponent<Image>().color = new Color32(0,166,17,174);
-
-        yield return new WaitForSeconds(0.5f);
+        yield return pressButton(start_ui.transform);
         
         start_ui.SetActive(false);
         answer_0_ui.SetActive(true);
@@ -307,6 +280,34 @@ public class personality_test : MonoBehaviour
         ended = false;
 
         state_array[state - 1].printText();
+    }
+
+    IEnumerator changeStates(int btn_press)
+    {
+        if (btn_press == 2)
+        {
+            yield return pressButton(question_ui.transform.GetChild(1));
+
+            state = prev_states.Pop();
+            state_array[state - 1].printText();
+        }
+        else 
+        {
+            Transform btn_bkg = (btn_press == 0) ? answer_0_ui.transform : answer_1_ui.transform;
+            yield return pressButton(btn_bkg);
+
+            prev_states.Push(state);
+            state = state_array[state - 1].nextState(btn_press);
+
+            if (state > num_questions)
+            {
+                endTest();
+            }
+            else
+            {
+                state_array[state - 1].printText();
+            }
+        }
     }
 
     void endTest()
@@ -322,5 +323,14 @@ public class personality_test : MonoBehaviour
         ended = true;
 
         end_state_array[state - 1 - num_questions].endScreen();
+    }
+
+    IEnumerator restartTest()
+    {
+        yield return pressButton(end_ui.transform.GetChild(3));
+                
+        end_state_array[state - 1 - num_questions].deactivateCube();
+        
+        startTest();
     }
 }
