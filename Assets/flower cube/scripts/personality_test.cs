@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class personality_test : MonoBehaviour
@@ -223,40 +224,50 @@ public class personality_test : MonoBehaviour
         {
             if (OVRInput.GetDown(OVRInput.RawButton.A))
             {
-                changeStates(0);
+                StartCoroutine(changeStates(0));
             }
             else if (OVRInput.GetDown(OVRInput.RawButton.B))
             {
-                changeStates(1);
+                StartCoroutine(changeStates(1));
             }
             else if (OVRInput.GetDown(OVRInput.RawButton.X))
             {
-                changeStates(2);
+                StartCoroutine(changeStates(2));
             }
         }
         else if (!started && OVRInput.GetDown(OVRInput.RawButton.A))
         {
-            enterTest();
+            StartCoroutine(enterTest());
         }
     }
 
-    void changeStates(int btn_press)
+    IEnumerator changeStates(int btn_press)
     {
         if (btn_press == 2)
         {
+            answer_0_ui.GetComponent<Image>().color = new Color32(0,0,0,174);
+            answer_1_ui.GetComponent<Image>().color = new Color32(0,0,0,174);
+
             state = prev_states.Pop();
             state_array[state - 1].printText();
         }
         else 
         {
+            Image btn_bkg = (btn_press == 0) ? answer_0_ui.GetComponent<Image>() : answer_1_ui.GetComponent<Image>();
+            btn_bkg.color = new Color32(0,166,17,174);
+
+            yield return new WaitForSeconds(0.5f);
+
             prev_states.Push(state);
             state = state_array[state - 1].nextState(btn_press);
+
             if (state > num_questions)
             {
                 endTest();
             }
             else
             {
+                btn_bkg.color = new Color32(0,0,0,174);
                 state_array[state - 1].printText();
             }
         }
@@ -264,6 +275,8 @@ public class personality_test : MonoBehaviour
 
     void startTest()
     {
+        start_ui.GetComponent<Image>().color = new Color32(0,0,0,174);
+        
         start_ui.SetActive(true);
         answer_0_ui.SetActive(false);
         answer_1_ui.SetActive(false);
@@ -277,8 +290,12 @@ public class personality_test : MonoBehaviour
         state = 1;
     }
 
-    void enterTest()
+    IEnumerator enterTest()
     {
+        start_ui.GetComponent<Image>().color = new Color32(0,166,17,174);
+
+        yield return new WaitForSeconds(0.5f);
+        
         start_ui.SetActive(false);
         answer_0_ui.SetActive(true);
         answer_1_ui.SetActive(true);
