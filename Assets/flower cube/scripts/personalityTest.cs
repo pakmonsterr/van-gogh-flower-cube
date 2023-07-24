@@ -6,6 +6,7 @@ using TMPro;
 
 public class personalityTest : MonoBehaviour
 {
+    // each question is stored as a State, with all info about that question (next states, answers, etc)
     public struct State
     {
         public State(int state_no, int to_0_state, int to_1_state, string question, string ans_0, string ans_1)
@@ -27,6 +28,7 @@ public class personalityTest : MonoBehaviour
         public int next_st_0 { get; }
         public int next_st_1 { get; }
 
+        // show question & answer text
         public void printText()
         {
             q_text.text = q;
@@ -34,12 +36,14 @@ public class personalityTest : MonoBehaviour
             a1_text.text = "(B) " + a1;
         }
 
+        // return next state based on which answer is chosen
         public int nextState(int btn_pressed)
         {
             return ((btn_pressed == 0) ? next_st_0 : next_st_1);
         }
     };
 
+    // the 11 different end states are also stored as structs
     public struct endState
     {
         public endState(GameObject end_cube, string end_title, string end_text)
@@ -53,6 +57,7 @@ public class personalityTest : MonoBehaviour
         public string title { get; }
         public string body_text { get; }
 
+        // activate final scene & corresponding text
         public void endScreen()
         {
             cube.SetActive(true);
@@ -60,56 +65,40 @@ public class personalityTest : MonoBehaviour
             end_body_text.text = body_text;
         }
 
+        // hides cube from this particular end state
         public void deactivateCube()
         {
             cube.SetActive(false);
         }
     }
     
-    static TMP_Text q_text;
-    static TMP_Text a0_text;
-    static TMP_Text a1_text;
-    static TMP_Text end_title_text;
-    static TMP_Text end_body_text;
+    // All UI text & objects
+    static TMP_Text q_text, a0_text, a1_text, end_title_text, end_body_text;
+    public GameObject start_ui, question_ui, answer_0_ui, answer_1_ui, end_ui, end_frame;
+    public GameObject end_cube_1, end_cube_2, end_cube_3, end_cube_4, end_cube_5, end_cube_6, end_cube_7, end_cube_8, end_cube_9, end_cube_10, end_cube_11;
 
-    public GameObject start_ui;
-    public GameObject question_ui;
-    public GameObject answer_0_ui;
-    public GameObject answer_1_ui;
-    public GameObject end_ui;
-    public GameObject end_frame;
+    // Stuff to control the various state machines
+    private int state, num_questions;
+    private bool started, ended;
 
-    private State[] state_array;
-    private int state;
+    // stack to record previously visited states (for undo button)
     private Stack<int> prev_states = new Stack<int>();
-    private int num_questions;
+
+    // arrays to hold states
+    private State[] state_array;
     private endState[] end_state_array;
-
-    private bool started;
-    private bool ended;
-
-    public GameObject end_cube_1;
-    public GameObject end_cube_2;
-    public GameObject end_cube_3;
-    public GameObject end_cube_4;
-    public GameObject end_cube_5;
-    public GameObject end_cube_6;
-    public GameObject end_cube_7;
-    public GameObject end_cube_8;
-    public GameObject end_cube_9;
-    public GameObject end_cube_10;
-    public GameObject end_cube_11;
     
-    // Start is called before the first frame update
+
     void Start()
     {
+        // get text from various UI panels (has to happen in start bc of the structs)
         q_text = question_ui.transform.GetChild(0).GetComponent<TMP_Text>();
         a0_text = answer_0_ui.transform.GetChild(0).GetComponent<TMP_Text>();
         a1_text = answer_1_ui.transform.GetChild(0).GetComponent<TMP_Text>();
         end_title_text = end_ui.transform.GetChild(1).GetComponent<TMP_Text>();
         end_body_text = end_ui.transform.GetChild(2).GetComponent<TMP_Text>();
 
-
+        // initialize state array with all states & text
         state_array = new State[] { new State(1, 2, 4,
                                         "When confronted in a dark alley, your first inclination is to...",
                                         "Run away",
@@ -168,6 +157,7 @@ public class personalityTest : MonoBehaviour
                                         "I need to inject morphine IN MY EYE")
                                     };
 
+        // initialize end state array
         end_state_array = new endState[] {  new endState(end_cube_1,
                                                 "No one",
                                                 "You are literally the worst fighter on the planet, even behind the 500 million people under the age of three. You should be terrified of everything and everyone."),
@@ -203,18 +193,18 @@ public class personalityTest : MonoBehaviour
                                                 "")
                                         };    
 
+        // test prep stuff
         num_questions = state_array.Length;
-
         startTest();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (ended)
         {
             if (OVRInput.GetDown(OVRInput.RawButton.Y))
             {
+                // restart test if ended & restart button pressed
                 StartCoroutine(restartTest());
             }
             else return;
@@ -223,25 +213,31 @@ public class personalityTest : MonoBehaviour
         {
             if (OVRInput.GetDown(OVRInput.RawButton.A))
             {
+                // first answer chosen, go to next question
                 StartCoroutine(changeStates(0));
             }
             else if (OVRInput.GetDown(OVRInput.RawButton.B))
             {
+                // second answer chosen, go to next question
                 StartCoroutine(changeStates(1));
             }
             else if (OVRInput.GetDown(OVRInput.RawButton.X))
             {
+                // back button chosen
                 StartCoroutine(changeStates(2));
             }
         }
         else if (!started && OVRInput.GetDown(OVRInput.RawButton.A))
         {
+            // begin test (from start screen)
             StartCoroutine(enterTest());
         }
     }
 
     IEnumerator pressButton(Transform button) 
     {
+        // simple button press color animation (turns green for 0.5 seconds)
+
         button.GetComponent<Image>().color = new Color32(0,166,17,174);
 
         yield return new WaitForSeconds(0.5f);
@@ -252,6 +248,7 @@ public class personalityTest : MonoBehaviour
 
     void startTest()
     {
+        // configure UI panel for starting screen
         start_ui.SetActive(true);
         answer_0_ui.SetActive(false);
         answer_1_ui.SetActive(false);
@@ -269,6 +266,7 @@ public class personalityTest : MonoBehaviour
     {
         yield return pressButton(start_ui.transform);
         
+        // configure UI for beginning test (going to first question)
         start_ui.SetActive(false);
         answer_0_ui.SetActive(true);
         answer_1_ui.SetActive(true);
@@ -286,6 +284,7 @@ public class personalityTest : MonoBehaviour
     {
         if (btn_press == 2)
         {
+            // if redo, go back to previous state
             yield return pressButton(question_ui.transform.GetChild(1));
 
             state = prev_states.Pop();
@@ -293,14 +292,17 @@ public class personalityTest : MonoBehaviour
         }
         else 
         {
+            // get pressed button
             Transform btn_bkg = (btn_press == 0) ? answer_0_ui.transform : answer_1_ui.transform;
             yield return pressButton(btn_bkg);
 
+            // add state to stack & move to next one
             prev_states.Push(state);
             state = state_array[state - 1].nextState(btn_press);
 
             if (state > num_questions)
             {
+                // if at the end of the test, go to ending screen
                 endTest();
             }
             else
@@ -312,6 +314,7 @@ public class personalityTest : MonoBehaviour
 
     void endTest()
     {
+        // configure UI for end of test
         start_ui.SetActive(false);
         answer_0_ui.SetActive(false);
         answer_1_ui.SetActive(false);
@@ -328,7 +331,8 @@ public class personalityTest : MonoBehaviour
     IEnumerator restartTest()
     {
         yield return pressButton(end_ui.transform.GetChild(3));
-                
+
+        // erase answer cube & restart test
         end_state_array[state - 1 - num_questions].deactivateCube();
         
         startTest();
