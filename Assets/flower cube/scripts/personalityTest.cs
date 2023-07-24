@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class personality_test : MonoBehaviour
+public class personalityTest : MonoBehaviour
 {
     public struct State
     {
