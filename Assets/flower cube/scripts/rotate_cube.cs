@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class rotate_cube : MonoBehaviour
 {
-    private bool first_touch;
+    private bool first_touch, release, decaying;
     private Vector3 start_pos;
-    private Quaternion current_rot;
-    private Quaternion quat;
+    private Quaternion current_rot, quat;
 
     public GameObject R_controller;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        first_touch = true;
+        release = false;
     }
 
     // Update is called once per frame
@@ -27,6 +27,7 @@ public class rotate_cube : MonoBehaviour
                 start_pos = Vector3.Normalize(2 * R_controller.transform.position - gameObject.transform.position);
                 current_rot = gameObject.transform.rotation;
                 first_touch = false;
+                release = true;
             }
             else
             {
@@ -37,8 +38,20 @@ public class rotate_cube : MonoBehaviour
         }
         else
         {
-            first_touch = true;
+            if (release && decaying)
+            {
+                first_touch = true;
+                release = false;
+                StartCoroutine(decayMotion());
+            }
+            
             gameObject.transform.Rotate(new Vector3(15, 15, 15) * Time.deltaTime);
         }
+    }
+
+    IEnumerator decayMotion()
+    {
+        
+        yield return new WaitForSeconds(0.0f);
     }
 }
