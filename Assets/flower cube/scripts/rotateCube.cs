@@ -9,20 +9,18 @@ public class rotateCube : MonoBehaviour
     private Vector3 start_pos, vec_start, vec_end, move_delta, cross_prod;
     private float angle;
     private Quaternion current_rot, quat, drag_quat;
+    public float timer;
 
     public GameObject R_controller;
-
-    public float timer;
     
-    // Start is called before the first frame update
     void Start()
     {
+        // initialize touch sequence stuff
         first_touch = true;
         release = false;
         decaying = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (OVRInput.Get(OVRInput.RawAxis1D.RIndexTrigger) > 0.95f)
@@ -35,6 +33,7 @@ public class rotateCube : MonoBehaviour
                 first_touch = false;
                 release = true;
             }
+            
             StartCoroutine(getMovementVector());
             
             // when controller dragged, get vector from closest point on cube, make quaternion from starting vector to current pos vector
@@ -64,6 +63,7 @@ public class rotateCube : MonoBehaviour
 
                 if (Mathf.Abs(angle) > 0.01f)
                 {
+                    // update angle of rotation at an inverse log rate to time
                     angle = angle * (Mathf.Log(-(timer / 12) + 1) + 1);
                     drag_quat = Quaternion.AngleAxis(angle, cross_prod);
                     gameObject.transform.rotation = drag_quat * gameObject.transform.rotation;
@@ -78,14 +78,16 @@ public class rotateCube : MonoBehaviour
 
     IEnumerator getMovementVector()
     {
+        // sample controller position at small intervals
         vec_start = R_controller.transform.position - gameObject.transform.position;
 
         yield return new WaitForSeconds(0.05f);
 
         vec_end = R_controller.transform.position - gameObject.transform.position;
+
+        // make quaternion with axis of rotation and angle
         cross_prod = Vector3.Cross(vec_start, vec_end);
         angle = Vector3.Angle(vec_start, vec_end);
-
         drag_quat = Quaternion.AngleAxis(angle, cross_prod);
     }
 

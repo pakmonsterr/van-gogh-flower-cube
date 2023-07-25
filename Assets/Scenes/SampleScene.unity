@@ -7846,7 +7846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &940969798529199763
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10502,8 +10502,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!137 &2800786582813601812
 SkinnedMeshRenderer:
@@ -10838,8 +10836,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!114 &3152717310963310185
 MonoBehaviour:
@@ -10905,8 +10901,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!23 &3282759656823745989
 MeshRenderer:
@@ -14207,8 +14201,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!33 &3469287837705180790
 MeshFilter:
@@ -14239,8 +14231,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!4 &3484739699549871534
 Transform:
@@ -14357,8 +14347,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!4 &3585332683751253959
 Transform:
@@ -14405,7 +14393,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &3658369204559285473
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -14427,8 +14415,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!23 &3671636109039957573
 MeshRenderer:
@@ -15934,8 +15920,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!64 &4170918523083134176
 MeshCollider:
@@ -16040,8 +16024,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!4 &4292514403928696573
 Transform:
@@ -24590,8 +24572,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!114 &8292141488567914905
 MonoBehaviour:
@@ -24776,8 +24756,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   R_controller: {fileID: 519063090}
-  debug_text_1: {fileID: 0}
-  debug_text_2: {fileID: 0}
   timer: 0
 --- !u!95 &8525104405152411175
 Animator:
