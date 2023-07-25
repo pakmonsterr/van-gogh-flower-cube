@@ -12,9 +12,7 @@ public class rotateCube : MonoBehaviour
 
     public GameObject R_controller;
 
-    public TMP_Text debug_text_1;
-    public TMP_Text debug_text_2;
-    public float timer = 0;
+    public float timer;
     
     // Start is called before the first frame update
     void Start()
@@ -37,17 +35,14 @@ public class rotateCube : MonoBehaviour
                 first_touch = false;
                 release = true;
             }
-            else
-            {
-                StartCoroutine(getMovementVector());
-                
-                // when controller dragged, get vector from closest point on cube, make quaternion from starting vector to current pos vector
-                Vector3 closest_point = Vector3.Normalize(R_controller.transform.position - gameObject.transform.position);
-                quat = Quaternion.FromToRotation(start_pos, closest_point);
+            StartCoroutine(getMovementVector());
+            
+            // when controller dragged, get vector from closest point on cube, make quaternion from starting vector to current pos vector
+            Vector3 closest_point = Vector3.Normalize(R_controller.transform.position - gameObject.transform.position);
+            quat = Quaternion.FromToRotation(start_pos, closest_point);
 
-                // apply quaternion to cube (quat * quat to double movement speed)
-                gameObject.transform.rotation = quat * quat * current_rot;
-            }
+            // apply quaternion to cube (quat * quat to double movement speed)
+            gameObject.transform.rotation = quat * quat * current_rot;
         }
         else
         {
@@ -67,8 +62,10 @@ public class rotateCube : MonoBehaviour
             {        
                 timer += Time.deltaTime;
 
-                if (timer < 2.0f)
+                if (Mathf.Abs(angle) > 0.01f)
                 {
+                    angle = angle * (Mathf.Log(-(timer / 12) + 1) + 1);
+                    drag_quat = Quaternion.AngleAxis(angle, cross_prod);
                     gameObject.transform.rotation = drag_quat * gameObject.transform.rotation;
                 }
                 else
@@ -90,8 +87,6 @@ public class rotateCube : MonoBehaviour
         angle = Vector3.Angle(vec_start, vec_end);
 
         drag_quat = Quaternion.AngleAxis(angle, cross_prod);
-
-        debug_text_1.text = $"{angle}";
     }
 
     IEnumerator onRelease()
